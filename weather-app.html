@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/29a00776d0.js" crossorigin="anonymous"></script>
+
+    <title>Document</title>
+</head>
+<style>
+    *{
+        font-family: sans-serif;
+    }
+
+    .container{
+        overflow: hidden;
+        border-radius: 20px;
+        color:white;
+        position:relative;
+        top:10vh;
+        margin:auto;
+        width:28vw;
+        height:80vh;
+        background-size: 100% 100%;
+        background-image: url('weather.jpg');
+        border:2px solid rgb(41, 69, 119);
+    }
+    .box, .menu, i{
+        position:absolute;
+    }
+    i{
+        padding:15px 25px;
+        font-size: 2em;
+    }
+    .menu{
+        height:8vh;
+        width:100%;
+        border-bottom: 2px solid silver;
+        background: rgb(187, 149, 55);
+        display:flex;
+    }
+    .bar{
+        height:100%;
+        width:28%;
+        background: rgb(41, 69, 119);
+        border-left: 2px solid silver;
+        text-shadow: 2px 3px 2px rgb(41, 69, 119);
+        line-height: 3em;
+        font-size: 1.2em;
+        font-weight: bolder;
+        text-align: center;
+        font-family:Arial, Helvetica, sans-serif;
+    }
+    .barr{
+        height:100%;
+        width:16%;       
+background: transparent;
+    }
+    .box{
+        width:70%;
+        height:30vh;
+        left:15%;
+        top:30vh;
+        display:grid;
+        grid-gap:10px;
+        grid-template-rows: 9vh 6vh 6vh;
+        grid-template-columns: auto;
+        justify-items: center;
+        color:rgb(187, 149, 55);
+        text-shadow: 2px 3px 2px black;
+        font-family:monospace;
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: bolder;
+        align-content: center;
+background: rgb(41, 69, 119);
+border-radius: 20px;
+border: 2px solid silver;
+z-index:2;
+    }
+    .active{
+        background:rgb(187, 149, 55);
+        color:rgb(41, 69, 119);
+        text-shadow: 2px 3px 2px rgb(187, 149, 55);
+    }
+    input{
+        padding:10px;
+        border-radius: 15px;
+        border: 2px solid rgb(41, 69, 119);
+        outline: none;
+    }
+    button{
+        padding:8px;
+        font-weight: bolder;
+        color:rgb(41, 69, 119);
+        width:35%;
+        background:rgb(187, 149, 55);
+        border-radius: 15px;
+        border: 2px solid rgb(41, 69, 119);
+    }
+    .icon img{
+        height:25vh;
+        margin-top:-5vh;
+        z-index:1;
+    }
+    .icon p{
+        margin-left:-5vw;
+    }
+    #output{
+        width:30vw;
+        height:80vh;
+        background-size: 100% 100%;
+        background-image: url('weather.jpg');
+        display: grid;
+        grid-template-rows:15vh 10vh 15vh 20vh 10vh;
+        grid-gap:auto;
+    }
+    #output h1{
+        position: relative;
+        text-align:center;
+        text-decoration: underline;
+    }
+    .container h1{
+        text-align:center;
+        text-decoration: underline;
+        position: absolute;
+        left:30%;
+        animation:color 3s infinite;
+    }
+    .container h3{
+        text-align:center;
+        font-size: 1.8em;
+        text-decoration: underline;
+
+    }
+    .box h2{
+        font-size: 1.2em!important;
+    }
+    @keyframes color{
+        50%{
+            color:rgb(29, 39, 58);
+        }
+    }
+#inp3, #inp4{
+    width:10vh;
+}
+.details, .temperature, .hum-speed, .icon{
+    display: flex;
+    justify-content: space-evenly;
+}
+.name, .contry{
+    /* background:white; */
+    font-weight: bolder;
+    font-size: 2em;
+    font-family: sans-serif;
+    text-shadow: 3px 3px 3px rgb(187, 149, 55);
+}
+.date{
+    position: relative;
+    bottom:7vh;
+    font-weight: bolder;
+    font-size: 1.5em;
+    display: flex;
+    justify-content:space-evenly;
+    font-family:sans-serif;
+    text-shadow: 2px 2px 2px rgb(187, 149, 55);
+}
+.icon{
+    font-size: 2em;
+    font-weight: bolder;
+    color:rgb(41, 69, 119);
+    /* background: rgba(233, 219, 20, 0.5); */
+    background: rgba(179, 178, 177, 0.6);
+}
+.temperature{
+    /* background: rgba(233, 219, 20, 0.5); */
+    background: rgba(179, 178, 177, 0.6);
+
+}
+.temperature p{
+    font-size: 2em;
+    font-weight: bolder;
+    color:rgb(41, 69, 119);
+}
+.temperature h2{
+    text-shadow: 2px 2px 2px rgb(41, 69, 119);
+}
+.hum-speed{
+    background: rgba(179, 178, 177, 0.6);
+    color:rgb(41, 69, 119);
+}
+</style>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <div class="menu">
+            <div class="barr"></div>
+            <div class="bar bar1">City Name</div>
+            <div class="bar bar2">Zip Code</div>
+            <div class="bar bar3">Lon & Lat</div>
+        </div>
+        <i class="fas fa-bars" id="click"></i>
+    <div class="box box1">
+        <h2>Search By City Nmae</h2>
+    <input id="inp1" type="text" placeholder="City Name*">
+    <button id="btn1">Click</button>
+</div>
+<div class="box box2">
+    <h2>Search By ZipCode </h2>
+    <input id="inp2" type="text" placeholder="City ZipCode*">
+    <button id="btn2">Click</button>
+</div>
+<div class="box box3">
+    <h2>Search By longitude & latitude</h2>
+    <span><input id="inp3" type="text" placeholder="longitude*">
+    <input id="inp4" type="text" placeholder="longitude*"></span>
+    <button id="btn3">Click</button>
+</div>
+        <div id="output"></div>
+        <div class="date"></div>
+        </div>
+
+<script>
+
+    // -------changes style appearance-------------
+$('.box').hide()
+$('.menu').hide()
+$('#click').click(function(){
+    $('.menu').slideToggle(500)
+})
+$('.bar1').click(function(){
+    $(this).addClass('active')
+$('.box1').slideToggle(500)
+$('.box2, .box3').hide()
+$('.bar2, .bar3').removeClass('active')
+})
+$('.bar2').click(function(){
+    $(this).addClass('active')
+$('.box2').slideToggle(500)
+$('.box1, .box3').hide()
+$('.bar1, .bar3').removeClass('active')
+})
+$('.bar3').click(function(){
+    $(this).addClass('active')
+$('.box3').slideToggle(500)
+$('.box1, .box2').hide()
+$('.bar1, .bar2').removeClass('active')
+})
+var date=new Date()
+var day=date.toDateString()
+$('.date').append(`Date:${day}`)
+// ------------current location---------------
+  $('document').ready(function(position){
+    navigator.geolocation.getCurrentPosition(function(position){
+   console.log(position.coords.latitude , position.coords.longitude)
+$.ajax({
+     url:"https://api.openweathermap.org/data/2.5/weather?lat="+ position.coords.latitude + "&lon="+ position.coords.longitude + "&units=metric" + "&appid=ff4c7a637259054158706d2d1bc94008",
+    type:"GET",
+success:function(data){
+    
+    allData(data)
+    $('.container h1').hide();
+}
+})
+  })
+})
+// ------------by city name---------------
+  $('#btn1').click(function(){
+    $('.box').hide()
+      var inpt1=$('#inp1').val();
+$.ajax({
+    url:"https://api.openweathermap.org/data/2.5/weather?q=" + inpt1 + "&units=metric" + "&appid=ff4c7a637259054158706d2d1bc94008",
+    type:"GET",
+success:function(data){
+    allData(data)
+    $('.container h1').hide();
+}
+})
+  })
+// ------------by zip code---------------
+  $('#btn2').click(function(){
+    $('.box').hide()
+      var inpt2=$('#inp2').val();
+$.ajax({
+    url:"https://api.openweathermap.org/data/2.5/weather?zip=" + inpt2 + "&units=metric" + "&appid=ff4c7a637259054158706d2d1bc94008",
+    type:"GET",
+success:function(data){ 
+allData(data)
+$('.container h1').hide();
+}
+})
+  })
+// ------------by lon lat---------------
+
+  $('#btn3').click(function(){
+    $('.box').hide()
+      var inpt3=$('#inp3').val();
+      var inpt4=$('#inp4').val();
+$.ajax({
+    url:"https://api.openweathermap.org/data/2.5/weather?lat="+inpt3+ "&lon=" +inpt4+ "&units=metric" + "&appid=ff4c7a637259054158706d2d1bc94008",
+
+    type:"GET",
+success:function(data){
+    allData(data)
+    $('.container h1').hide();
+}
+})
+  })
+// ------------render by success---------------
+  function allData(data){
+    console.log(data)
+   var code=data.weather[0].icon
+   if(code=="50n" || code=="50d"){
+       $('#output').css("background-image", "url('mist.gif')")
+   }
+   else if(code=="13n" || code=="13d"){
+    $('#output').css("background-image", "url('snow.gif')")       
+   }
+   else if(code=="11n" || code=="11d"){
+    $('#output').css("background-image", "url('thunder.gif')")       
+   }
+   else if(code=="10n" || code=="10d"){
+    $('#output').css("background-image", "url('rain.gif')")       
+   }
+   else if(code=="09n" || code=="09d"){
+    $('#output').css("background-image", "url('srain.gif')")       
+   }
+   else if(code=="04n" || code=="04d"){
+    $('#output').css("background-image", "url('bclouds.gif')")       
+   }
+   else if(code=="03n" || code=="03d"){
+    $('#output').css("background-image", "url('sclouds.gif')")       
+   }
+   else if(code=="02n" || code=="02d"){
+    $('#output').css("background-image", "url('fclouds.gif')")       
+   }
+   else if(code=="01n" || code=="01d"){
+    $('#output').css("background-image", "url('csky.gif')")       
+   }
+   $('#output').html(`<h3>Current Weather</h3>
+   <div class="details">
+   <div class="name"><span>${data.name}</span> &nbsp;<span>(${data.sys.country})</span></div>
+   </div>
+   <div class="icon">
+<img src="http://openweathermap.org/img/wn/${code}@2x.png" alt=""><p>${data.weather[0].main}</p>
+   </div>
+   <div class="temperature">
+   <div class="forenheit"><p>${Math.trunc(data.main.temp)}&#176C</p><h2>Celsius</h2></div>
+   <div class="celcius"><p>${Math.trunc((9/5*(data.main.temp))+32)}&#176F</p><h2>Fahrenheit</h2></div>
+   <div class="kelvin"><p>${Math.trunc((data.main.temp)+273.15)}&#176K</p><h2>Kelvin</h2></div>
+   </div>
+   <div class="hum-speed">
+   <div class="hum"><h2>Humidity:${data.main.humidity}%</h2></div>
+   <div class="wind"><h2>Wind:${Math.trunc((data.wind.speed)*2.23694)}mph</h2></div>
+   </div>`
+   )
+  }
+</script>
+</body>
+</html>
+
